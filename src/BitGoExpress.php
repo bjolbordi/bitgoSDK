@@ -31,16 +31,16 @@ class BitGoExpress implements BitGoExpressInterface {
     /**
      * BitGoExpress Initialization
      * 
-     * @param string $bitgoUrl  Set the bitgoUrl of your BitGo Express instance
+     * @param string $hostname  Set the hostname of your BitGo Express instance
      * @param int $port         Set the port of your BitGo Express instance
      * @param string $coin      Select the coin what you want to use with the BitGOSDK (use CurrencyCode class to select)
      * @throws \Exception
      */
-    public function __construct(string $bitgoUrl, int $port, string $coin = CurrencyCode::BITCOIN) {
-        $this->bitgoUrl = $bitgoUrl;
+    public function __construct(string $hostname, int $port, string $coin = CurrencyCode::BITCOIN) {
+        $this->hostname = $hostname;
         $this->port = $port;
         $this->coin = $coin;
-        $this->APIEndpoint = $this->bitgoUrl . '/api/v2/' . $this->coin;
+        $this->APIEndpoint = $this->hostname . '/api/v2/' . $this->coin;
 
         if (!in_array($this->coin, $this->allowedCoins)) {
             throw new \Exception('You are trying to use an invalid coin!');

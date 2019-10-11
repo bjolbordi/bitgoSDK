@@ -36,12 +36,12 @@ class BitGoExpress implements BitGoExpressInterface {
      * @param string $coin      Select the coin what you want to use with the BitGOSDK (use CurrencyCode class to select)
      * @throws \Exception
      */
-    public function __construct(string $hostname, int $port, string $coin = CurrencyCode::BITCOIN) {
+    public function __construct($sslVerification = false, string $hostname, int $port, string $coin = CurrencyCode::BITCOIN) {
         $this->hostname = $hostname;
         $this->port = $port;
         $this->coin = $coin;
         $this->APIEndpoint = $this->hostname . '/api/v2/' . $this->coin;
-
+        $this->sslVerification = $sslVerification;
         if (!in_array($this->coin, $this->allowedCoins)) {
             throw new \Exception('You are trying to use an invalid coin!');
         }
@@ -497,7 +497,7 @@ class BitGoExpress implements BitGoExpressInterface {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array_filter($this->params)));
         }
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->sslVerification);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if (isset($this->accessToken) && !$this->login) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
